@@ -6,7 +6,7 @@ import { isValidEmail } from '../utils';
 const registerRoute = express.Router();
 
 registerRoute.post('/', async (req, res) => {
-	const { email, password } = req?.body;
+	const { email, password } = req.body;
 
 	if (!(email && password)) {
 		return res.status(400).send('Email or password fields missing!');

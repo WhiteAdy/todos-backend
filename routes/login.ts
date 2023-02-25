@@ -10,7 +10,7 @@ const loginRoute = express.Router();
 const JWT_SECRET = process.env.JWT_SECRET;
 
 loginRoute.post('/', async (req, res) => {
-	const { email, password } = req?.body;
+	const { email, password } = req.body;
 
 	if (!(email && password)) {
 		return res.status(400).send('Email or password fields missing!');
@@ -42,7 +42,7 @@ loginRoute.post('/', async (req, res) => {
 	const newToken = jwt.sign(
 		{ id: existingUser.id, email: existingUser.email },
 		JWT_SECRET!,
-		{ expiresIn: '15s' }
+		{ expiresIn: '15m' }
 	);
 
 	return res.status(200).json(newToken);
