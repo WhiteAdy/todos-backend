@@ -38,7 +38,11 @@ loginRoute.post('/', async (req, res) => {
 	}
 
 	const newToken = jwt.sign(
-		{ id: existingUser.id, email: existingUser.email },
+		{
+			id: existingUser.id,
+			fullName: existingUser.fullName,
+			email: existingUser.email,
+		},
 		JWT_SECRET,
 		{ expiresIn: '15m' }
 	);

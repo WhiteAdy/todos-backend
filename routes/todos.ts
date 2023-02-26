@@ -23,6 +23,21 @@ todosRoute.use((req, res, next) => {
 	});
 });
 
+todosRoute.get('/', async (req, res) => {
+	const { user } = req.body;
+
+	try {
+		const todos = await prisma.todo.findMany({
+			where: {
+				userId: user.id,
+			},
+		});
+		res.status(200).json(todos);
+	} catch (e) {
+		res.status(500).send('Unable to find the todos!');
+	}
+});
+
 todosRoute.post('/', async (req, res) => {
 	const { title, completed, user } = req.body;
 
@@ -42,7 +57,7 @@ todosRoute.post('/', async (req, res) => {
 	}
 });
 
-todosRoute.patch('/:id', async (req, res) => {
+todosRoute.put('/:id', async (req, res) => {
 	const { id } = req.params;
 	const { completed } = req.body;
 
