@@ -57,7 +57,7 @@ todosRoute.post('/', async (req, res) => {
 	}
 });
 
-todosRoute.patch('/:id', async (req, res) => {
+todosRoute.put('/:id', async (req, res) => {
 	const { id } = req.params;
 	const { completed } = req.body;
 
