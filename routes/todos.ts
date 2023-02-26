@@ -2,9 +2,9 @@ import { Prisma } from '@prisma/client';
 import express from 'express';
 import jwt from 'jsonwebtoken';
 import { prisma } from '..';
+import { JWT_SECRET } from '../constants';
 
 const todosRoute = express.Router();
-const JWT_SECRET = process.env.JWT_SECRET;
 
 todosRoute.use((req, res, next) => {
 	const { authorization } = req.headers;
@@ -14,7 +14,7 @@ todosRoute.use((req, res, next) => {
 		return res.status(401).send('Unauthorized!');
 	}
 
-	jwt.verify(bearer, JWT_SECRET!, (err, user) => {
+	jwt.verify(bearer, JWT_SECRET, (err, user) => {
 		if (err) return res.status(401).send('Unauthorized!');
 
 		// Extend the request body with the user obtained from the JWT

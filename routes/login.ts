@@ -1,13 +1,11 @@
 import express from 'express';
-import dotenv from 'dotenv';
 import { prisma } from '..';
 import bcrypt from 'bcrypt';
 import { isValidEmail } from '../utils';
 import jwt from 'jsonwebtoken';
+import { JWT_SECRET } from '../constants';
 
-dotenv.config();
 const loginRoute = express.Router();
-const JWT_SECRET = process.env.JWT_SECRET;
 
 loginRoute.post('/', async (req, res) => {
 	const { email, password } = req.body;
@@ -41,7 +39,7 @@ loginRoute.post('/', async (req, res) => {
 
 	const newToken = jwt.sign(
 		{ id: existingUser.id, email: existingUser.email },
-		JWT_SECRET!,
+		JWT_SECRET,
 		{ expiresIn: '15m' }
 	);
 
