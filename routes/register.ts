@@ -6,10 +6,12 @@ import { isValidEmail } from '../utils';
 const registerRoute = express.Router();
 
 registerRoute.post('/', async (req, res) => {
-	const { email, password } = req.body;
+	const { fullName, email, password } = req.body;
 
-	if (!(email && password)) {
-		return res.status(400).send('Email or password fields missing!');
+	if (!(fullName && email && password)) {
+		return res
+			.status(400)
+			.send('Full name, email or password fields missing!');
 	}
 
 	if (!isValidEmail(email)) {
@@ -31,6 +33,7 @@ registerRoute.post('/', async (req, res) => {
 	try {
 		await prisma.user.create({
 			data: {
+				fullName,
 				email,
 				password: hashedPassword,
 			},
