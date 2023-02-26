@@ -1,3 +1,4 @@
+import { Prisma } from '@prisma/client';
 import express from 'express';
 import jwt from 'jsonwebtoken';
 import { prisma } from '..';
@@ -65,10 +66,31 @@ todosRoute.patch('/:id', async (req, res) => {
 				completed,
 			},
 		});
-
 		return res.status(200).send('Todo item changed!');
 	} catch (e) {
 		res.status(500).send('Unable to change the status of the todo item!');
+	}
+});
+
+todosRoute.delete('/:id', async (req, res) => {
+	const { id } = req.params;
+
+	try {
+		await prisma.todo.delete({
+			where: {
+				id: Number(id),
+			},
+		});
+		return res.status(200).send('Todo item deleted!');
+	} catch (e) {
+		if (e instanceof Prisma.PrismaClientKnownRequestError) {
+			if (e.code === 'P2025') {
+				return res
+					.status(404)
+					.send('Todo item not found in the database!');
+			}
+		}
+		res.status(500).send('Unable to delete the todo item!');
 	}
 });
 
